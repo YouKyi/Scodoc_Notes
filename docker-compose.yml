@@ -1,0 +1,59 @@
+services:
+  scodoc-notes:
+    build: .
+    image: scodoc-notes:latest
+    container_name: scodoc-notes
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      # -- Scodoc --
+      SCODOC_URL: "http://e-bulletin.iutcolmar.uha.fr/ScoDoc"
+      SCODOC_LOGIN: "admin"
+      SCODOC_PASSWORD: "changeme"
+      SCODOC_NOM_IUT: "IUT"
+      SCODOC_MULTI: "false"
+
+      # -- CAS --
+      CAS_HOST: "cas.uha.fr"
+      CAS_CONTEXT: "/cas/"
+      CAS_PORT: "443"
+      # CAS_CERT_PATH: "/var/www/config/cas.pem"
+
+      # -- Modules --
+      SCODOC_RELEVE_PDF: "true"
+      SCODOC_ACCES_ENSEIGNANTS: "false"
+      SCODOC_AFFICHER_ABSENCES: "false"
+      SCODOC_MODULE_ABSENCES: "false"
+      SCODOC_CAS_RETURN_TYPE: "nip"
+      # -- JWT --
+      # SCODOC_JWT_KEY: ""
+
+      # -- LDAP (optionnel) --
+      # SCODOC_LDAP_URL: "ldap://ldap.example.com:389"
+      # SCODOC_LDAP_USER: "uid=reader,ou=dsa,dc=example,dc=com"
+      # SCODOC_LDAP_PASSWORD: "ldap_password"
+      # SCODOC_LDAP_DN: "dc=example,dc=com"
+      # SCODOC_LDAP_UID: "uid"
+      # SCODOC_LDAP_IDCAS: "mail"
+      # SCODOC_LDAP_FILTRE_UFR: ""
+      # SCODOC_LDAP_FILTRE_ETUDIANT: "edupersonaffiliation=student"
+
+      # -- Absences --
+      # SCODOC_ABSENCE_HEURE_DEBUT: "8"
+      # SCODOC_ABSENCE_HEURE_FIN: "20"
+      # SCODOC_ABSENCE_PAS: "0.5"
+      # SCODOC_ABSENCE_DUREE_SEANCE: "2"
+    volumes:
+      - scodoc-data:/var/www/data
+      # Pour utiliser un fichier config manuel à la place des env vars :
+      # - ./config:/var/www/config
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/" ]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  scodoc-data:
