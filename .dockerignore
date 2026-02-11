@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+LICENSE
+Notes d'installations.txt
+
+# Install scripts (not needed in image)
+installOrUpdate.sh
+update-noRoot.sh
+
+# Runtime data (mounted as volumes)
+config/
+data/
+
+# Docker files
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+.DS_Store
